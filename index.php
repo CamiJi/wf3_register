@@ -1,5 +1,9 @@
 <?php
 
+$imagesDir = 'uploads/';
+
+$images = glob($imagesDir.'*');
+
 if (isset($_POST['action'])){
 
 	// echo "<pre>";
@@ -18,11 +22,13 @@ if (isset($_POST['action'])){
 
 
 		// Je range ces données dans des variables pour les réutiliser ultérieurement!
-	$uploadFileType = $_FILES['photo']['type'];
-	$uploadFilesSize = $_FILES['photo']['size'];
 	$prenom = $_POST["prenom"];
 	$nom = $_POST["nom"];
 	$photo = $_FILES["photo"];
+
+	$nomPhoto = $_FILES['photo']["name"];
+	$uploadFileType = $_FILES['photo']['type'];
+	$uploadFilesSize = $_FILES['photo']['size'];
 
 		// Je vérifie qu'aucune données ne manque et indique un message d'erreur si elles sont manquantes
 		//  Je vérifie la validité des données 
@@ -30,37 +36,38 @@ if (isset($_POST['action'])){
 		// photo = size > 0 et type = jpeg || png || gif
 
 
-		// 1. On vérifie le prénom
-	if(empty($prenom)) {
-		$erreur_prenom = "<span style='color: red;'>Le prénom est obligatoire !</span>";
-	}
-	elseif(strlen($_POST['prenom']) < 2 || strlen($_POST['prenom']) > 10) {
-		$erreur_prenom_lenght = "<span style='color: red;'>Vérifiez la longueur de votre prénom ! </span>" ;
-	}
+	
 
-		// 2. On vérifie le nom
-	if(empty($nom)) {
-		$erreur_nom = "<span style='color: red;'>Le nom est obligatoire !</span>";
-	}
-	elseif(strlen($_POST['nom']) < 2 || strlen($_POST['nom']) > 10) {
-		$erreur_nom_lenght = "<span style='color: red;'>Vérifiez la longueur de votre nom ! </span>" ;
-	}
+			// 1. On vérifie le prénom
+		if(empty($prenom)) {
+			$erreur_prenom = "<span class='bg-danger'>Le prénom est obligatoire !</span>";
+		}
+		elseif(strlen($_POST['prenom']) < 2 || strlen($_POST['prenom']) > 10) {
+			$erreur_prenom_lenght = "<span class='bg-danger'>Vérifiez la longueur de votre prénom ! </span>" ;
+		}
 
-		// 3. On vérifie la photo
-	if(empty($photo)) {
-		$erreur_photo = "<span style='color: red;'>Une photo est obligatoire !</span>";
-	}
-	elseif($uploadFilesSize < 1) {
-		$erreur_photo = "<span style='color: red;'>Il n'y a pas d'image !</span>";
-	}
-	elseif(!strstr($uploadFileType, 'jpg') && !strstr($uploadFileType, 'jpeg') && !strstr($uploadFileType, 'png') && !strstr($uploadFileType, 'gif')){
+			// 2. On vérifie le nom
+		if(empty($nom)) {
+			$erreur_nom = "<span class='bg-danger'>Le nom est obligatoire !</span>";
+		}
+		elseif(strlen($_POST['nom']) < 2 || strlen($_POST['nom']) > 10) {
+			$erreur_nom_lenght = "<span class='bg-danger'>Vérifiez la longueur de votre nom ! </span>" ;
+		}
 
-		$erreurTypeFile = "<span style='color: red;'>Seuls les fichiers Jpeg, Png et Gif sont acceptés!</span>";
-	}
+			// 3. On vérifie la photo
+		if(empty($photo)) {
+			$erreur_photo = "<span class='bg-danger'>Une photo est obligatoire !</span>";
+		}
+		elseif($uploadFilesSize < 1) {
+			$erreur_photo = "<span class='bg-danger'>Il n'y a pas d'image !</span>";
+		}
+		elseif(!strstr($uploadFileType, 'jpg') && !strstr($uploadFileType, 'jpeg') && !strstr($uploadFileType, 'png') && !strstr($uploadFileType, 'gif')){
 
-		// 4. Si tout va bien on upload la photo ;)
+			$erreurTypeFile = "<span class='bg-danger'>Seuls les fichiers Jpeg, Png et Gif sont acceptés!</span>";
+		}
+		// Si tout va bien on upload la photo ;) et on envoie l'admission
 	else{
-		$admission = "<span style='color: blue;'>Merci pour votre inscription !</span>";
+		$admission = "<span class='bg-info'>Merci pour votre photo !</span>";
 		move_uploaded_file($_FILES['photo']['tmp_name'], './uploads/'.$_FILES['photo']['name']);
 	}
 
@@ -79,28 +86,30 @@ if (isset($_POST['action'])){
 	<title></title>
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/main.css">
+
 </head>
 <body>
 	
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<h1>Inscription</h1>
+				<h1>Envoyez nous votre photo!</h1>
 				<form action="#" method="POST" enctype="multipart/form-data">
 					<div class="form-group">
-						<label for="nom">Nom</label>
+						<label for="nom">Votre nom</label>
 						<input class="form-control" type="text" id="nom" name ="nom" placeholder="Nom" >						
 					    <?php if(isset($erreur_nom)) echo $erreur_nom ?>
 					    <?php if(isset($erreur_nom_lenght)) echo $erreur_nom_lenght ?>
 					</div>
 					<div class="form-group">
-						<label for="prenom">Prénom</label>
+						<label for="prenom">Votre prénom</label>
 						<input class="form-control" type="text" id="prenom" name ="prenom" placeholder="Prénom" >
 						<?php if(isset($erreur_prenom)) echo $erreur_prenom ?>
 					    <?php if(isset($erreur_prenom_lenght)) echo $erreur_prenom_lenght ?>
 					</div>
 					<div class="form-group">
-						<label for="photo">Votre photo de profil</label>
+						<label for="photo">Votre photo</label>
 						<input type="file" id="photo" name="photo">
 						<p class="help-block">L'image doit être inférieure à 1 Mo, sinon elle ne sera pas traité.<br/>
 						Extension acceptées *.jpg, *.png, *.gif</p>
@@ -109,15 +118,58 @@ if (isset($_POST['action'])){
 					</div>
 					<div class="form-group">
 						<button type="submit" name="action" class="btn btn-default">Envoyer</button>
-						<?php if(isset($admission)) echo $admission ?>
 					</div>
 				</form>
-			</div>
-			
+			</div>		
 		</div>
 
-		
-	</div>
 
+
+		<?php if (isset($admission)) : ?>
+			<div class="row" id="data">
+				
+
+						<!-- J'ajoute un paragraphe qui injectera les données de manière dynamique en PHP -->
+				<div class="col-md-6">
+
+					<h3>La dernière photo chargée</h3>
+
+					<table class="table">
+						<tr>
+							<td>Prénom</td>
+							<td>Nom</td>
+							<td>Photo</td>
+						</tr>
+						<tr>
+							<td><?php echo $prenom ?></td>
+							<td><?php echo $nom ?></td>
+							<td><?php echo "<img class='img-thumbnail' height='200' width='200' src='uploads/".$nomPhoto."''>" ?></td>
+						</tr>
+
+					</table>
+
+					<h4><?php if(isset($admission)) echo $admission ?></h4>
+
+				</div>
+			</div>	
+		<?php endif; ?>
+
+
+			<div class="row">
+				<div class="col-md-6">
+
+					<h3>Notre collection de photo</h3>
+
+					<?php foreach ($images as $keyImages => $image) : ?>
+			
+						<img class='img-thumbnail' id="" width="320" height="180" src="<?php echo $image; ?>"/></img>
+
+					<?php endforeach?>
+					
+				</div>
+				
+			</div>
+
+	</div><!-- Fin du container -->
 </body>
 </html>
