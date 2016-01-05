@@ -90,75 +90,65 @@ if (isset($_POST['action'])){
 
 </head>
 <body>
-	
+
 	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<h1>Envoyez nous votre photo!</h1>
-				<form action="#" method="POST" enctype="multipart/form-data">
-					<div class="form-group">
-						<label for="nom">Votre nom</label>
-						<input class="form-control" type="text" id="nom" name ="nom" placeholder="Nom" >						
-					    <?php if(isset($erreur_nom)) echo $erreur_nom ?>
-					    <?php if(isset($erreur_nom_lenght)) echo $erreur_nom_lenght ?>
-					</div>
-					<div class="form-group">
-						<label for="prenom">Votre prénom</label>
-						<input class="form-control" type="text" id="prenom" name ="prenom" placeholder="Prénom" >
-						<?php if(isset($erreur_prenom)) echo $erreur_prenom ?>
-					    <?php if(isset($erreur_prenom_lenght)) echo $erreur_prenom_lenght ?>
-					</div>
-					<div class="form-group">
-						<label for="photo">Votre photo</label>
-						<input type="file" id="photo" name="photo">
-						<p class="help-block">L'image doit être inférieure à 1 Mo, sinon elle ne sera pas traité.<br/>
-						Extension acceptées *.jpg, *.png, *.gif</p>
-						<?php if(isset($erreurTypeFile)) echo $erreurTypeFile ?>
-						<?php if(isset($erreur_photo)) echo $erreur_photo ?>
-					</div>
-					<div class="form-group">
-						<button type="submit" name="action" class="btn btn-default">Envoyer</button>
-					</div>
-				</form>
-			</div>		
+		<div class="row" id="sendIt">
+			<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<h1>Envoyez nous votre photo de tortue!</h1>
+					<form action="#" method="POST" enctype="multipart/form-data">
+						<div class="form-group">
+							<label for="prenom">Votre prénom</label>
+							<input class="form-control" type="text" id="prenom" name ="prenom" placeholder="Prénom" >
+							<?php if(isset($erreur_prenom)) echo $erreur_prenom ?>
+						    <?php if(isset($erreur_prenom_lenght)) echo $erreur_prenom_lenght ?>
+						</div>
+						<div class="form-group">
+							<label for="nom">Votre nom</label>
+							<input class="form-control" type="text" id="nom" name ="nom" placeholder="Nom" >						
+						    <?php if(isset($erreur_nom)) echo $erreur_nom ?>
+						    <?php if(isset($erreur_nom_lenght)) echo $erreur_nom_lenght ?>
+						</div>
+						<div class="form-group">
+							<label for="photo">Votre photo</label>
+							<input type="file" id="photo" name="photo">
+							<p class="help-block">L'image doit être inférieure à 1 Mo, sinon elle ne sera pas traité.<br/>
+							Extension acceptées *.jpg, *.png, *.gif</p>
+							<?php if(isset($erreurTypeFile)) echo $erreurTypeFile ?>
+							<?php if(isset($erreur_photo)) echo $erreur_photo ?>
+						</div>
+						<div class="form-group">
+							<button type="submit" name="action" class="btn btn-default">Envoyer</button>
+						</div>
+						<h4><?php if(isset($admission)) echo $admission ?></h4>
+					</form>
+				</div>		
+			<div class="col-md-3"></div>
 		</div>
 
-
-
+		
 		<?php if (isset($admission)) : ?>
 			<div class="row" id="data">
 				
+				<div class="col-md-12" id="lastPic">
 
-						<!-- J'ajoute un paragraphe qui injectera les données de manière dynamique en PHP -->
-				<div class="col-md-6">
+					<h3>La dernière tortue en ligne</h3>
 
-					<h3>La dernière photo chargée</h3>
+					<?php echo "<img class='img-thumbnail' height='320' width='180' src='uploads/".$nomPhoto."''>" ?>
+					<br />
+					<span class="label label-info">Envoyée par : <?php echo $prenom .' '. $nom ?></span>
 
-					<table class="table">
-						<tr>
-							<td>Prénom</td>
-							<td>Nom</td>
-							<td>Photo</td>
-						</tr>
-						<tr>
-							<td><?php echo $prenom ?></td>
-							<td><?php echo $nom ?></td>
-							<td><?php echo "<img class='img-thumbnail' height='200' width='200' src='uploads/".$nomPhoto."''>" ?></td>
-						</tr>
-
-					</table>
-
-					<h4><?php if(isset($admission)) echo $admission ?></h4>
 
 				</div>
+				
 			</div>	
 		<?php endif; ?>
 
 
-			<div class="row">
-				<div class="col-md-6">
+			<div class="row" id="photoCollection">
+				<div class="col-md-12">
 
-					<h3>Notre collection de photo</h3>
+					<h3>Notre collection de tortues</h3>
 
 					<?php foreach ($images as $keyImages => $image) : ?>
 			

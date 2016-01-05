@@ -4,5 +4,32 @@ body{
 
 .container{
 	background-color: white;
+	text-align: center;
 
 }
+
+
+
+#sendIt{
+	text-align: center;
+	margin-bottom: 30px;
+
+}
+
+#lastPic{
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+
+#photoCollection{
+	text-align: center;
+	margin-bottom: 30px;
+
+}
+
+.help-block {
+	text-align: left;
+}
+
+
